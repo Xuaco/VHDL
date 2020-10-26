@@ -19,31 +19,13 @@ end entity;
 -- Arquitectura del circuito
 
 architecture arch of oneBitFullAdder is
-
-    signal auxInVect : std_logic_vector (2 downto 0);
-
 begin
 
-    auxInVect(2) <= carryIn;
-    auxInVect(1) <= a;
-    auxInVect(0) <= b;
+    sum <= ((not carryIn) and (not a) and b)
+        or ((not carryIn) and a and (not b))
+        or (carryIn and (not a) and (not b))
+        or (carryIn and a and b);
 
-    sum <= '0' when auxInVect = "000" else
-        '1' when auxInVect = "001" else
-        '1' when auxInVect = "010" else
-        '0' when auxInVect = "011" else
-        '1' when auxInVect = "100" else
-        '0' when auxInVect = "101" else
-        '0' when auxInVect = "110" else
-        '1';
-
-    carryOut <= '0' when auxInVect = "000" else
-        '0' when auxInVect = "001" else
-        '0' when auxInVect = "010" else
-        '1' when auxInVect = "011" else
-        '0' when auxInVect = "100" else
-        '1' when auxInVect = "101" else
-        '1' when auxInVect = "110" else
-        '1';
+    carryOut <= (carryIn and b) or (a and b) or (carryIn and a);
 
 end architecture;
